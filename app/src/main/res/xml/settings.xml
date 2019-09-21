@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/prefTituloCategoria1">
+        <EditTextPreference
+            app:key="nombreJugador"
+            app:title="@string/prefTituloNombreJugador"
+            app:summary="@string/prefTextoNombreJugador" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/prefTituloCategoria2">
+        <!-- TODO Añadir otros ajustes -->
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/prefTituloCategoria3">
+        <Preference
+            app:title="@string/prefLink1Title"
+            android:icon="@drawable/ic_youtube"
+            app:summary="@string/prefLink1Summary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/prefLink1Data"
+                />
+        </Preference>
+        <Preference
+            app:title="@string/prefLink2Title"
+            app:icon="@mipmap/ic_miw_launcher_rounded"
+            app:summary="@string/prefLink2Summary">
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/prefLink2Data"
+                />
+        </Preference>
+    </PreferenceCategory>
+</PreferenceScreen>
