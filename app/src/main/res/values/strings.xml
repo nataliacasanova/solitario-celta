@@ -4,6 +4,7 @@
     <string name="app_name">Solitario Celta</string>
 
     <string name="txtSinImplementar">¡No implementado aún!</string>
+    <string name="txtPrueba">Prueba</string>
 
     <!-- Opciones -->
     <string name="txtReiniciarPartida">Reiniciar</string>

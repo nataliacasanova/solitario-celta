@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
      * @param v Vista de la ficha pulsada
      */
     public void fichaPulsada(@NotNull View v) {
-        String resourceName = getResources().getResourceEntryName(v.getId());
+        String resourceName = getResources().getResourceEntryName(v.getId()); //id pxy sobre el que se ha pulsado
         int i = resourceName.charAt(1) - '0';   // fila
         int j = resourceName.charAt(2) - '0';   // columna
 
@@ -96,6 +96,11 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage(R.string.aboutMessage)
                         .setPositiveButton(android.R.string.ok, null)
                         .show();
+                return true;
+
+            case R.id.opcReiniciarPartida:
+                miJuegoVM.reiniciar();
+                this.mostrarTablero();
                 return true;
 
             // TODO!!! resto opciones
