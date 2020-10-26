@@ -1,6 +1,7 @@
 package es.upm.miw.SolitarioCelta;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +17,12 @@ import androidx.lifecycle.ViewModelProvider;
 import com.google.android.material.snackbar.Snackbar;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 import es.upm.miw.SolitarioCelta.model.SCeltaViewModel;
 import es.upm.miw.SolitarioCelta.model.SCeltaViewModelFactory;
@@ -24,15 +32,16 @@ public class MainActivity extends AppCompatActivity {
     protected final String LOG_TAG = "MiW";
     protected final Integer ID = 2021;
     protected SCeltaViewModel miJuegoVM;
+    protected final Integer NUM_FICHAS_INIT = 32;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         miJuegoVM = new ViewModelProvider(
-                    this,
-                    new SCeltaViewModelFactory(getApplication(), ID)
-                    )
+                this,
+                new SCeltaViewModelFactory(getApplication(), ID)
+        )
                 .get(SCeltaViewModel.class);
         mostrarTablero();
     }
@@ -41,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
      * Se ejecuta al pulsar una ficha
      * Las coordenadas (i, j) se obtienen a partir del nombre del recurso, ya que el botón
      * tiene un identificador en formato pXY, donde X es la fila e Y la columna
+     *
      * @param v Vista de la ficha pulsada
      */
     public void fichaPulsada(@NotNull View v) {
@@ -99,7 +109,15 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcReiniciarPartida:
-                new AlertRestartFragment().show(getSupportFragmentManager(),"ALERT DIALOG");
+                new AlertRestartFragment().show(getSupportFragmentManager(), "ALERT DIALOG");
+                return true;
+
+            case R.id.opcGuardarPartida:
+                guardarPartida();
+                return true;
+
+            case R.id.opcRecuperarPartida:
+                recuperarPartida();
                 return true;
 
             // TODO!!! resto opciones
@@ -109,9 +127,55 @@ public class MainActivity extends AppCompatActivity {
                         findViewById(android.R.id.content),
                         getString(R.string.txtSinImplementar),
                         Snackbar.LENGTH_LONG
-                        )
+                )
                         .show();
         }
         return true;
+    }
+
+    private String obtenerNombreFichero() {
+        return getString(R.string.default_NombreFich);
+    }
+
+    public void guardarPartida(){
+
+        String tablero = this.miJuegoVM.serializaTablero();
+
+        try {
+            FileOutputStream fos = openFileOutput(obtenerNombreFichero(), Context.MODE_PRIVATE);
+            fos.write(tablero.getBytes());
+            fos.close();
+            Toast.makeText(this, getString(R.string.txtPartidaGuardada), Toast.LENGTH_SHORT).show();
+
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this,getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this, getString(R.string.txtPartidaNoGuardada), Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+    public void recuperarPartida(){
+
+        if(miJuegoVM.numeroFichas() == NUM_FICHAS_INIT){
+            cargarPartida();
+        }else
+            new AlertLoadGameFragment().show(getSupportFragmentManager(), "ALERT DIALOG");
+    }
+
+    public void cargarPartida(){
+
+        try {
+            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput(obtenerNombreFichero())));
+            String partida = fin.readLine();
+            miJuegoVM.deserializaTablero(partida);
+            mostrarTablero();
+            Toast.makeText(this,getString(R.string.txtPartidaCargada), Toast.LENGTH_SHORT).show();
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this,getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            Toast.makeText(this,getString(R.string.txtPartidaNoCargada), Toast.LENGTH_SHORT).show();
+        }
+
     }
 }
