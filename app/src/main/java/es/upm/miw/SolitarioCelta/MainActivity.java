@@ -99,8 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcReiniciarPartida:
-                miJuegoVM.reiniciar();
-                this.mostrarTablero();
+                new AlertRestartFragment().show(getSupportFragmentManager(),"ALERT DIALOG");
                 return true;
 
             // TODO!!! resto opciones
