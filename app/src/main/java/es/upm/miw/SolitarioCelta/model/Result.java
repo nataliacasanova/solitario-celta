@@ -10,11 +10,12 @@ public class Result {
 
     static public final String TABLA = "resultados";
     static public final String FECHA = "fecha";
+    static public final String FICHAS = "fichas";
 
     @PrimaryKey(autoGenerate = true)
     protected Integer uid;
 
-    @ColumnInfo(name = "fichas")
+    @ColumnInfo(name = FICHAS)
     protected Integer fichas;
 
     @ColumnInfo(name = "nombre")

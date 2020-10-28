@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface ResultDAO {
 
-    @Query("SELECT * FROM " + Result.TABLA+ " ORDER BY " + Result.FECHA + " ASC ")
+    @Query("SELECT * FROM " + Result.TABLA+ " ORDER BY " + Result.FICHAS + " ASC ")
     List<Result> getAll();
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
