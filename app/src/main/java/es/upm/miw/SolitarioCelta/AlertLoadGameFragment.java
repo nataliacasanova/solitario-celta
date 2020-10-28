@@ -23,7 +23,7 @@ public class AlertLoadGameFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                main.cargarPartida();
+                                main.loadGame();
                             }
                         }
                 )

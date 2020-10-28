@@ -3,7 +3,9 @@ package es.upm.miw.SolitarioCelta;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -23,7 +26,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import es.upm.miw.SolitarioCelta.model.Result;
+import es.upm.miw.SolitarioCelta.model.ResultDataBase;
 import es.upm.miw.SolitarioCelta.model.SCeltaViewModel;
 import es.upm.miw.SolitarioCelta.model.SCeltaViewModelFactory;
 
@@ -32,11 +39,25 @@ public class MainActivity extends AppCompatActivity {
     protected final String LOG_TAG = "MiW";
     protected final Integer ID = 2021;
     protected SCeltaViewModel miJuegoVM;
+
     protected final Integer NUM_FICHAS_INIT = 32;
+
+    ResultDataBase resultDataBase;
+    SharedPreferences sharedPref;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
+        resultDataBase = Room.databaseBuilder(
+                getApplicationContext(),
+                ResultDataBase.class,
+                ResultDataBase.DATA_BASE
+        )
+                .allowMainThreadQueries()
+                .build();
 
         miJuegoVM = new ViewModelProvider(
                 this,
@@ -57,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         String resourceName = getResources().getResourceEntryName(v.getId()); //id pxy sobre el que se ha pulsado
         int i = resourceName.charAt(1) - '0';   // fila
         int j = resourceName.charAt(2) - '0';   // columna
+        int fichas = miJuegoVM.numeroFichas();
 
         Log.i(LOG_TAG, "fichaPulsada(" + i + ", " + j + ") - " + resourceName);
         miJuegoVM.jugar(i, j);
@@ -64,7 +86,17 @@ public class MainActivity extends AppCompatActivity {
 
         mostrarTablero();
         if (miJuegoVM.juegoTerminado()) {
-            // TODO guardar puntuación
+            String fecha = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+
+            resultDataBase.resultDAO().insert(
+                    new Result(
+                            fichas,
+                            getGamePlayerName(),
+                            fecha
+                            )
+            );
+
+            Toast.makeText(this, getString(R.string.txtGuardarBaseDatos), Toast.LENGTH_SHORT).show();
             new AlertDialogFragment().show(getSupportFragmentManager(), "ALERT_DIALOG");
         }
     }
@@ -113,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcGuardarPartida:
-                guardarPartida();
+                saveGame();
                 return true;
 
             case R.id.opcRecuperarPartida:
-                recuperarPartida();
+                recoverGame();
                 return true;
 
             // TODO!!! resto opciones
@@ -133,48 +165,59 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private String obtenerNombreFichero() {
+    private String getFileName() {
         return getString(R.string.default_NombreFich);
     }
 
-    public void guardarPartida(){
+    private String getGamePlayerName() {
+
+        String jugador = sharedPref.getString(
+                getString(R.string.key_NombreJugador),
+                getString(R.string.default_NombreJugador));
+
+        Log.i(LOG_TAG, "Nombre del jugador: " + jugador);
+
+        return jugador;
+    }
+
+    public void saveGame() {
 
         String tablero = this.miJuegoVM.serializaTablero();
 
         try {
-            FileOutputStream fos = openFileOutput(obtenerNombreFichero(), Context.MODE_PRIVATE);
+            FileOutputStream fos = openFileOutput(getFileName(), Context.MODE_PRIVATE);
             fos.write(tablero.getBytes());
             fos.close();
             Toast.makeText(this, getString(R.string.txtPartidaGuardada), Toast.LENGTH_SHORT).show();
 
         } catch (FileNotFoundException e) {
-            Toast.makeText(this,getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             Toast.makeText(this, getString(R.string.txtPartidaNoGuardada), Toast.LENGTH_SHORT).show();
 
         }
     }
 
-    public void recuperarPartida(){
+    public void recoverGame() {
 
-        if(miJuegoVM.numeroFichas() == NUM_FICHAS_INIT){
-            cargarPartida();
-        }else
+        if (miJuegoVM.numeroFichas() == NUM_FICHAS_INIT) {
+            loadGame();
+        } else
             new AlertLoadGameFragment().show(getSupportFragmentManager(), "ALERT DIALOG");
     }
 
-    public void cargarPartida(){
+    public void loadGame() {
 
         try {
-            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput(obtenerNombreFichero())));
+            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput(getFileName())));
             String partida = fin.readLine();
             miJuegoVM.deserializaTablero(partida);
             mostrarTablero();
-            Toast.makeText(this,getString(R.string.txtPartidaCargada), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.txtPartidaCargada), Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
-            Toast.makeText(this,getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.ficheroNotFound), Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
-            Toast.makeText(this,getString(R.string.txtPartidaNoCargada), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.txtPartidaNoCargada), Toast.LENGTH_SHORT).show();
         }
 
     }

@@ -4,7 +4,7 @@
 
     <PreferenceCategory app:title="@string/prefTituloCategoria1">
         <EditTextPreference
-            app:key="nombreJugador"
+            app:key="@string/key_NombreJugador"
             app:title="@string/prefTituloNombreJugador"
             app:summary="@string/prefTextoNombreJugador" />
     </PreferenceCategory>

@@ -23,8 +23,7 @@ public class Result {
     @ColumnInfo(name = FECHA)
     protected String fecha;
 
-    public Result(Integer uid, Integer fichas, String jugador, String fecha) {
-        this.uid = uid;
+    public Result(Integer fichas, String jugador, String fecha) {
         this.fichas = fichas;
         this.jugador = jugador;
         this.fecha = fecha;

@@ -32,6 +32,12 @@
     <string name="txtPartidaCargada">Partida cargada</string>
     <string name="txtPartidaNoCargada">Error al cargar la partida</string>
 
+    <!-- Guardar Puntuacion -->
+    <string name="key_NombreJugador">pref_NombreJugador</string>
+    <string name="title_NombreJugador">Nombre del jugador</string>
+    <string name="default_NombreJugador">Jugador 0</string>
+    <string name="txtGuardarBaseDatos">Puntuación guardada en la base de datos</string>
+
     <!-- Diálogo Final -->
     <string name="txtDialogoFinalTitulo">Fin del juego</string>
     <string name="txtDialogoFinalPregunta">¿Desea jugar otra partida?</string>
