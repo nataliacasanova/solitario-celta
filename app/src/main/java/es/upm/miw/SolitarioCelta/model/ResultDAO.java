@@ -15,4 +15,7 @@ public interface ResultDAO {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long insert(Result result);
+
+    @Query(" DELETE FROM " + Result.TABLA )
+    void deleteAll();
 }

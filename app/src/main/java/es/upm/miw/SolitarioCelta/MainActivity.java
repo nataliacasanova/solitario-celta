@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     ResultDataBase resultDataBase;
     SharedPreferences sharedPref;
 
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

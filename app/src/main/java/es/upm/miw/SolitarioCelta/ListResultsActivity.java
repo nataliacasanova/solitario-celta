@@ -1,6 +1,7 @@
 package es.upm.miw.SolitarioCelta;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,8 +37,9 @@ public class ListResultsActivity extends AppCompatActivity {
         );
 
         lvListResults.setAdapter(resultAdapter);
-        //incluir dialogo para borrar resultados
+    }
 
-
+    public void Delete(View view) {
+        new AlertDeletResultsFragment().show(getSupportFragmentManager(), "ALERT DIALOG");
     }
 }

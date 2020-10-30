@@ -38,6 +38,9 @@
     <string name="default_NombreJugador">Jugador 0</string>
     <string name="txtGuardarBaseDatos">Puntuación guardada en la base de datos</string>
 
+    <!-- Mejores Resultados -->
+    <string name="txtMejoresResultados">Mejores Resultados</string>
+
     <!-- Diálogo Borrar Resultados -->
     <string name="txtBorrarResultados">Borrar Resultados</string>
     <string name="txtBorrarPregunta">¿Desea borrar el historial de resultados?</string>
