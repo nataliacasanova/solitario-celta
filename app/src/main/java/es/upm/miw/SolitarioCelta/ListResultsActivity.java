@@ -11,6 +11,8 @@ import es.upm.miw.SolitarioCelta.model.ResultDataBase;
 public class ListResultsActivity extends AppCompatActivity {
 
     ListView lvListResults;
+    ResultAdapter resultAdapter;
+    ResultDataBase resultDataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +21,7 @@ public class ListResultsActivity extends AppCompatActivity {
 
         lvListResults = findViewById(R.id.lvListResults);
 
-        ResultDataBase resultDataBase = Room.databaseBuilder(
+        resultDataBase = Room.databaseBuilder(
                 getApplicationContext(),
                 ResultDataBase.class,
                 ResultDataBase.DATA_BASE
@@ -27,13 +29,14 @@ public class ListResultsActivity extends AppCompatActivity {
                 .allowMainThreadQueries()
                 .build();
 
-        ResultAdapter resultAdapter = new ResultAdapter(
+        resultAdapter = new ResultAdapter(
                 this,
                 R.layout.result_item,
                 resultDataBase.resultDAO().getAll()
         );
 
         lvListResults.setAdapter(resultAdapter);
+        //incluir dialogo para borrar resultados
 
 
     }

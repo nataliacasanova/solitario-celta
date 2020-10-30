@@ -129,9 +129,11 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(@NotNull MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.opcAjustes:
                 startActivity(new Intent(this, SCeltaPrefs.class));
                 return true;
+
             case R.id.opcAcercaDe:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.aboutTitle)
@@ -152,7 +154,10 @@ public class MainActivity extends AppCompatActivity {
                 recoverGame();
                 return true;
 
-            // TODO!!! resto opciones
+            case R.id.opcMejoresResultados:
+                startActivity(new Intent(this, ListResultsActivity.class));
+                return true;
+
 
             default:
                 Snackbar.make(

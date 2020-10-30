@@ -32,22 +32,23 @@ public class ResultAdapter extends ArrayAdapter {
     @NonNull
     @Override
     public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        if (null == convertView) {
+        if (convertView == null) {
             LayoutInflater inflador = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflador.inflate(idLayout, parent, false);
+            convertView = inflador.inflate(this.idLayout, null);
         }
 
-
-        // Asignar contenido a los elementos de la vista
-        TextView tvNamePlayer = convertView.findViewById(R.id.tvNamePlayer);
-        TextView tvDate = convertView.findViewById(R.id.tvDate);
-        TextView tvFichas = convertView.findViewById(R.id.tvFichas);
-
         Result result = results.get(position);
+
         if (result != null) {
+
+            // Asignar contenido a los elementos de la vista
+            TextView tvNamePlayer = convertView.findViewById(R.id.tvListResultNamePlayer);
+            TextView tvDate = convertView.findViewById(R.id.tvListResultDate);
+            TextView tvFichas = convertView.findViewById(R.id.tvListResultFichas);
+
             tvNamePlayer.setText(result.getJugador());
             tvDate.setText(result.getFecha());
-            tvFichas.setText(result.getFichas());
+            tvFichas.setText(Integer.toString(result.getFichas()));
         }
 
         return convertView;
