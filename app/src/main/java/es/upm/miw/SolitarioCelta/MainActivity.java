@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -108,8 +109,12 @@ public class MainActivity extends AppCompatActivity {
     public void mostrarTablero() {
         RadioButton button;
         String strRId;
+        TextView tvBarraFichas = findViewById(R.id.tvBarraFichas);
         String prefijoIdentificador = getPackageName() + ":id/p"; // formato: package:type/entry
         int idBoton;
+
+
+        tvBarraFichas.setText("Fichas restantes " +String.valueOf(miJuegoVM.numeroFichas()));
 
         for (int i = 0; i < SCeltaViewModel.TAMANIO; i++)
             for (int j = 0; j < SCeltaViewModel.TAMANIO; j++) {
