@@ -1,3 +1,5 @@
+Repositoro de github : https://github.com/nataliacasanova/solitario-celta
+
 REINICIAR PARTIDA
 ---------------------
 
