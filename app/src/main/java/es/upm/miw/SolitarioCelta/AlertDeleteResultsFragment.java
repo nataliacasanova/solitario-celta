@@ -7,9 +7,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
 
-import com.google.android.material.snackbar.Snackbar;
-
-public class AlertDeletResultsFragment extends DialogFragment {
+public class AlertDeleteResultsFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -25,16 +23,7 @@ public class AlertDeletResultsFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                listResultsActivity.resultDataBase.resultDAO().deleteAll();
-
-                                listResultsActivity.resultAdapter = new ResultAdapter(
-                                        listResultsActivity,
-                                        R.layout.result_item,
-                                        listResultsActivity.resultDataBase.resultDAO().getAll()
-                                );
-
-                                listResultsActivity.lvListResults.setAdapter(listResultsActivity.resultAdapter);
-
+                                listResultsActivity.delete();
                             }
 
 

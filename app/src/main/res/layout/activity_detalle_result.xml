@@ -10,13 +10,35 @@
     tools:context=".ListResultsActivity">
 
 
-    <Button
-        android:id="@+id/btnDelete"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:onClick="Delete"
-        android:text="Delete Results" />
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:onClick="delete"
+            android:text="Delete Results" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnShowPlayer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="showPlayerResults"
+            android:layout_weight="1"
+            android:text="Show Player Results" />
+
+    <Button
+        android:id="@+id/btnShowAll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="showAllResults"
+        android:layout_weight="1"
+        android:text="Show All Results" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

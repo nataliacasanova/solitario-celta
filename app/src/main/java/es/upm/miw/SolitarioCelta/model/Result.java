@@ -11,6 +11,7 @@ public class Result {
     static public final String TABLA = "resultados";
     static public final String FECHA = "fecha";
     static public final String FICHAS = "fichas";
+    static public final String JUGADOR = "nombre";
 
     @PrimaryKey(autoGenerate = true)
     protected Integer uid;
@@ -18,7 +19,7 @@ public class Result {
     @ColumnInfo(name = FICHAS)
     protected Integer fichas;
 
-    @ColumnInfo(name = "nombre")
+    @ColumnInfo(name = JUGADOR)
     protected String jugador;
 
     @ColumnInfo(name = FECHA)
